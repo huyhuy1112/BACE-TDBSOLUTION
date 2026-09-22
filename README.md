@@ -8,6 +8,7 @@ Multi-tenant CRM SaaS — Phase 1 (tenant-ready). **Target runtime: Node.js 16.2
 - **API:** NestJS **10** + Prisma **5** + PostgreSQL (RLS-ready)
 - **Infra local:** Docker Compose → Postgres 16, Redis 7, MinIO
 - **cPanel entry:** `app.js` (web), `api.js` (API, optional second Node app)
+- **Static fallback:** `index.html` (LiteSpeed hết 404 khi Node chưa chạy)
 
 ## Quick start (local)
 
