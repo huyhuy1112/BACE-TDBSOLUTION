@@ -1,4 +1,6 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --bg: #fff9ef;
@@ -15,13 +17,6 @@
   --radius: 20px;
   --font-display: var(--font-syne);
   --font-body: var(--font-dm-sans);
-}
-
-@theme inline {
-  --color-bg: var(--bg);
-  --color-ink: var(--ink);
-  --color-accent: var(--accent);
-  --font-sans: var(--font-body);
 }
 
 * {

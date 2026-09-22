@@ -22,7 +22,7 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const port = config.get<number>('API_PORT', 3001);
+  const port = Number(config.get('PORT')) || Number(config.get('API_PORT')) || 3001;
   await app.listen(port);
   // eslint-disable-next-line no-console
   console.log(`BACE API listening on http://localhost:${port}/api`);
