@@ -11,10 +11,10 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "dev": "tsc -p tsconfig.json --watch"
+    "build": "npx tsc -p tsconfig.json",
+    "dev": "npx tsc -p tsconfig.json --watch"
   },
-  "devDependencies": {
+  "dependencies": {
     "typescript": "^5.7.3"
   }
 }

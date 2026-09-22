@@ -30,33 +30,39 @@ npm run dev:web
 - Postgres host port: **5433**  
 - Seed: `admin@bace.local` / `Admin@123456`
 
-## Deploy on cPanel (Node 16.20.2)
+## Deploy on cPanel (Node 16.20.2, UI hạn chế)
 
-1. Pull latest code into `bace-tdbsolution.tdbsolution.com` folder.
-2. **Setup Node.js App**
-   - Node: **16.20.2**
-   - Mode: **Production**
-   - Application root: `bace-tdbsolution.tdbsolution.com`
-   - Application URL: `bace-tdbsolution.tdbsolution.com` (empty path)
-   - Startup file: **`app.js`**
-3. Open the virtualenv terminal from the Node app UI (or SSH), then:
+Host không có virtualenv/SSH? Dùng nút trên **Setup Node.js App**.
 
-```bash
-npm install
-npm run build -w @bace/shared
-npm run build -w @bace/web
-```
+### Env (bắt buộc)
 
-4. Set env vars in the Node app (at least `NODE_ENV=production`, `NEXT_PUBLIC_API_URL=...`).
-5. **Restart** the application.
+| Name | Value |
+|------|--------|
+| `NODE_ENV` | `development` (hoặc `production`) |
+| `NPM_CONFIG_PRODUCTION` | `false` |
+| `NEXT_PUBLIC_API_URL` | `https://api-bace.tdbsolution.com/api` |
 
-### API (second Node app, recommended)
+### Node app
 
-- Startup file: **`api.js`**
-- Build first: `npm run build -w @bace/api` (+ Prisma generate/migrate against host Postgres)
-- Env: `DATABASE_URL`, `JWT_*`, `WEB_URL`, `PORT` (cPanel sets PORT)
+- Node: **16.20.2**
+- Application root / URL: `bace-tdbsolution.tdbsolution.com`
+- Startup file: **`app.js`**
 
-> Shared cPanel often has **MySQL only**. This app needs **PostgreSQL**. Without Postgres, API cannot run on that host.
+### Thứ tự nút trên UI
+
+1. **Pull** code mới từ GitHub (`huy-dev`)
+2. **SAVE** env
+3. **Run NPM Install** — đợi xong; trong File Manager, `node_modules` phải có folder `next`, `.bin`, … (không chỉ 1 file `package.json`)
+4. Chạy script NPM **`build`** (root) — giờ chỉ build **shared + web** (không build Nest API)
+5. **Restart** application
+
+> Nếu Install xong mà `node_modules` vẫn gần trống → host chặn/timeout npm; khi đó cần zip từ Linux hoặc VPS (không commit `node_modules` lên GitHub).
+
+### API (second Node app)
+
+- Startup: **`api.js`**
+- Script: `build:api` sau khi có Postgres
+- Env: `DATABASE_URL`, `JWT_*`, `WEB_URL`
 
 ## Architecture invariants
 
@@ -69,6 +75,7 @@ npm run build -w @bace/web
 ```
 app.js              cPanel Next startup
 api.js              cPanel Nest startup
+index.html          LiteSpeed static fallback
 apps/api            NestJS API
 apps/web            Next.js UI
 packages/shared     Shared types + permissions
